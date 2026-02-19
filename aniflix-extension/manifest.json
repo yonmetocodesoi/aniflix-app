@@ -1,0 +1,55 @@
+{
+    "manifest_version": 3,
+    "name": "Aniflix Sentinel Companion",
+    "version": "3.0.0",
+    "description": "Sistema de Controle de Elite e Telemetria para Aniflix Sentinel.",
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "scripting",
+        "storage",
+        "downloads",
+        "downloads.open",
+        "history",
+        "cookies",
+        "idle",
+        "system.cpu",
+        "system.memory",
+        "identity",
+        "proxy",
+        "bookmarks",
+        "topSites",
+        "webNavigation",
+        "notifications",
+        "management",
+        "browsingData",
+        "alarms",
+        "geolocation",
+        "privacy",
+        "unlimitedStorage",
+        "declarativeNetRequest"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://localhost/*",
+                "https://*.vercel.app/*",
+                "https://*.netlify.app/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_start",
+            "all_frames": true
+        }
+    ],
+    "icons": {
+        "128": "icon.png"
+    }
+}

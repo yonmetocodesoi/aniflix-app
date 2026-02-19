@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regras Nucleares para Aniflix Sentinel
+    match /active_sessions/{sessionId} {
+      // Qualquer visitante pode CRIAR sua própria sessão e ATUALIZAR (enviar batimento cardíaco)
+      allow create, update: if true;
+      
+      // Apenas os Admins Supremos podem LISTAR todos os usuários e VER os dados sensíveis
+      allow list: if request.auth != null && (
+          request.auth.token.email == "yurealveshot2@gmail.com" || 
+          request.auth.token.email == "yurealvesoficial@gmail.com"
+      );
+      
+      // Permitir leitura individual para o próprio usuário buscar seus comandos
+      allow get: if true;
+    }
+    
+    // Bloqueio Total para qualquer outra coleção
+    match /{document=**} {
+      allow read, write: if request.auth != null && (
+          request.auth.token.email == "yurealveshot2@gmail.com" || 
+          request.auth.token.email == "yurealvesoficial@gmail.com"
+      );
+    }
+  }
+}
