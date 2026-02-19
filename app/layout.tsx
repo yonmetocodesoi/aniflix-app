@@ -16,6 +16,7 @@ export const viewport: Viewport = {
 
 import { AuthProvider } from '@/components/auth-provider';
 import { PresenceTracker } from '@/components/presence-tracker';
+import { DownloadPopup } from '@/components/download-popup';
 
 export default function RootLayout({
   children,
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <AuthProvider>
           <PresenceTracker />
+          <DownloadPopup />
           {children}
         </AuthProvider>
       </body>
