@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
   id="player"
   src="${url.replace(/"/g, '&quot;')}"
   allowfullscreen
-  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-  sandbox="allow-scripts allow-same-origin allow-presentation allow-pointer-lock translate allow-forms allow-modals"
+  allow="autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope; volume-control; clipboard-write; display-capture; geolocation; microphone; camera"
+  referrerpolicy="no-referrer-when-downgrade"
 ></iframe>
 
 <script>
@@ -114,7 +114,7 @@ console.log('[AdShield] Engine loaded successfully');
   return new NextResponse(html, {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Frame-Options": "SAMEORIGIN",
+      "Referrer-Policy": "no-referrer-when-downgrade",
     },
   });
 }

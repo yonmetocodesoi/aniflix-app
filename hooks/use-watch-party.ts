@@ -169,6 +169,7 @@ export function useWatchParty(
     }, [socket, roomId]);
 
     return {
+        socket,
         isConnected,
         roomId,
         isLeader,

@@ -21,6 +21,7 @@ interface WatchPartyControlsProps {
 
 export function WatchPartyControls({ className, onSyncAction, currentMedia }: WatchPartyControlsProps) {
     const {
+        socket,
         isConnected,
         roomId,
         isLeader,
@@ -100,7 +101,7 @@ export function WatchPartyControls({ className, onSyncAction, currentMedia }: Wa
                     {roomId && <span className="text-xs font-bold hidden md:inline">{members.length}</span>}
                 </button>
             </SheetTrigger>
-            <SheetContent className="w-[400px] bg-zinc-950 border-l border-zinc-800 text-white flex flex-col p-0">
+            <SheetContent className="w-full sm:w-[540px] md:w-[400px] bg-zinc-950 border-l border-zinc-800 text-white flex flex-col p-0">
                 <SheetHeader className="p-6 border-b border-zinc-900">
                     <SheetTitle className="text-white flex items-center gap-2">
                         <Users className="text-red-600" />
@@ -249,8 +250,8 @@ export function WatchPartyControls({ className, onSyncAction, currentMedia }: Wa
                                             <div key={idx} className={`flex flex-col ${msg.userId === (members.find(m => m.id === socket?.id)?.id) ? 'items-end' : 'items-start'}`}>
 
                                                 <div className={`px-3 py-2 text-xs max-w-[85%] break-words shadow-sm ${msg.userId === (members.find(m => m.id === socket?.id)?.id)
-                                                        ? 'bg-red-600/90 text-white rounded-2xl rounded-tr-sm'
-                                                        : 'bg-zinc-800 text-zinc-200 rounded-2xl rounded-tl-sm'
+                                                    ? 'bg-red-600/90 text-white rounded-2xl rounded-tr-sm'
+                                                    : 'bg-zinc-800 text-zinc-200 rounded-2xl rounded-tl-sm'
                                                     }`}>
                                                     <span className={`block text-[8px] font-bold mb-0.5 opacity-70 ${msg.userId === (members.find(m => m.id === socket?.id)?.id) ? 'text-red-100' : 'text-zinc-400'
                                                         }`}>

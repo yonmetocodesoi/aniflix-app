@@ -234,8 +234,8 @@ export function WatchPlayer({
   return (
     <div className="min-h-screen bg-black flex flex-col font-sans">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-3 bg-black/80 backdrop-blur-sm border-b border-white/10 relative z-50">
-        <div className="flex items-center gap-4 min-w-0">
+      <div className="flex items-center justify-between px-3 md:px-8 py-2 md:py-3 bg-black/80 backdrop-blur-sm border-b border-white/10 relative z-50 gap-2">
+        <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
           <Link
             href={backUrl}
             className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors flex-shrink-0"
@@ -243,17 +243,17 @@ export function WatchPlayer({
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm hidden md:inline">Voltar</span>
           </Link>
-          <div className="flex flex-col">
-            <h1 className="text-sm md:text-base font-semibold text-white truncate max-w-[200px] md:max-w-md">
+          <div className="flex flex-col min-w-0 flex-1">
+            <h1 className="text-xs md:text-base font-semibold text-white truncate">
               {title}
             </h1>
-            <div className="flex gap-2 mt-1.5 overflow-x-auto scrollbar-hide no-scrollbar pb-1">
+            <div className="flex gap-1.5 mt-1 overflow-x-auto scrollbar-hide no-scrollbar pb-1">
               {playerOptions.map((player) => (
                 <button
                   key={player.id}
                   onClick={() => player.url && setActiveServer(player.id)}
                   disabled={!player.url && !((activeServer === 3 && mediaType === "movie") || (activeServer === 2 && mediaType === "tv"))}
-                  className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full transition-all ${activeServer === player.id
+                  className={`text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 md:px-2.5 py-0.5 md:py-1 rounded-full transition-all ${activeServer === player.id
                     ? 'bg-red-600 text-white'
                     : (player.url || ((player.id === 3 && mediaType === "movie") || (player.id === 2 && mediaType === "tv")))
                       ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
@@ -267,14 +267,14 @@ export function WatchPlayer({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
           {/* Watch Party Controls */}
           <WatchPartyControls
             onSyncAction={handleSyncAction}
             currentMedia={{ server: activeServer, season, episode, title }}
           />
 
-          <div className="w-px h-4 bg-white/10 mx-1" />
+          <div className="hidden xs:block w-px h-4 bg-white/10 mx-1" />
 
           {/* External Controls to bypass overlay */}
           <button
@@ -293,17 +293,17 @@ export function WatchPlayer({
             <Maximize className="h-4 w-4" />
           </button>
 
-          <div className="w-px h-4 bg-white/10 mx-1" />
+          <div className="hidden sm:block w-px h-4 bg-white/10 mx-1" />
 
           {/* Ad Shield indicator */}
-          <div className="flex items-center gap-1.5 bg-emerald-900/50 px-2 py-1 rounded text-[10px] text-emerald-400 border border-emerald-800/50">
+          <div className="hidden xs:flex items-center gap-1.5 bg-emerald-900/50 px-2 py-1 rounded text-[10px] text-emerald-400 border border-emerald-800/50">
             <ShieldCheck className="h-3 w-3" />
             <span className="hidden sm:inline">AdShield</span>
           </div>
 
           {mediaType === "tv" && (
-            <div className="flex items-center gap-2 flex-shrink-0 bg-zinc-900/50 p-1 rounded-md border border-white/5">
-              <Tv className="h-4 w-4 text-zinc-500" />
+            <div className="flex items-center gap-1 md:gap-2 flex-shrink-0 bg-zinc-900/50 p-0.5 md:p-1 rounded-md border border-white/5">
+              <Tv className="h-3.5 w-3.5 md:h-4 md:w-4 text-zinc-500" />
               <select
                 value={season}
                 onChange={(e) => goToEpisode(Number(e.target.value), 1)}
@@ -351,7 +351,7 @@ export function WatchPlayer({
             src={`/api/embed?url=${encodeURIComponent(currentPlayerUrl)}`}
             className="w-full h-full flex-1 aspect-video"
             allowFullScreen
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope; volume-control; clipboard-write"
             title={title}
           />
         ) : (
@@ -392,14 +392,14 @@ export function WatchPlayer({
 
       {/* Episode navigation for series */}
       {mediaType === "tv" && (
-        <div className="flex items-center justify-between px-4 md:px-8 py-4 bg-black/90 backdrop-blur-md border-t border-white/10">
+        <div className="flex items-center justify-between px-3 md:px-8 py-2.5 md:py-4 bg-black/90 backdrop-blur-md border-t border-white/10 select-none">
           <button
             onClick={goPrev}
             disabled={!hasPrev}
-            className="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm font-medium text-zinc-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors py-1"
           >
-            <ChevronLeft className="h-5 w-5" />
-            Anterior
+            <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+            <span className="hidden xs:inline">Anterior</span>
           </button>
 
           <div className="hidden sm:flex flex-col items-center">
@@ -410,10 +410,10 @@ export function WatchPlayer({
           <button
             onClick={goNext}
             disabled={!hasNext}
-            className="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm font-medium text-zinc-400 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors py-1"
           >
-            Próximo
-            <ChevronRight className="h-5 w-5" />
+            <span className="hidden xs:inline">Próximo</span>
+            <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
           </button>
         </div>
       )}
