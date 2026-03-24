@@ -33,3 +33,4 @@ ios/
 *.zip
 *.rar
 *.log
+.vercel

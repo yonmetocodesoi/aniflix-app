@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect, useRef } from "react"
-import { ArrowLeft, ChevronLeft, ChevronRight, Tv, Server, Loader2, ShieldCheck, Maximize, RotateCcw } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight, Tv, Server, Loader2, Maximize, RotateCcw } from "lucide-react"
 import type { TMDBSeason } from "@/lib/tmdb"
 import { WatchPartyControls } from "./watch-party-controls"
 
@@ -99,15 +99,9 @@ export function WatchPlayer({
   const currentSeason = seasons?.find((s) => s.season_number === season)
   const totalEpisodes = currentSeason?.episode_count || 1
 
-  // Block pop-ups from the parent page
-  useEffect(() => {
-    const originalOpen = window.open
-    window.open = function (...args: any[]) {
-      console.log("[AdShield] Pop-up bloqueado:", args[0])
-      return null
-    }
-    return () => { window.open = originalOpen }
-  }, [])
+  // Remove pop-up blocker to prevent sandbox/tampering detection
+  // The user requested to leave ads as-is to avoid errors
+
 
   useEffect(() => {
     const isScraper = (mediaType === "movie" && activeServer === 3) || (mediaType === "tv" && activeServer === 2);
@@ -295,11 +289,7 @@ export function WatchPlayer({
 
           <div className="hidden sm:block w-px h-4 bg-white/10 mx-1" />
 
-          {/* Ad Shield indicator */}
-          <div className="hidden xs:flex items-center gap-1.5 bg-emerald-900/50 px-2 py-1 rounded text-[10px] text-emerald-400 border border-emerald-800/50">
-            <ShieldCheck className="h-3 w-3" />
-            <span className="hidden sm:inline">AdShield</span>
-          </div>
+
 
           {mediaType === "tv" && (
             <div className="flex items-center gap-1 md:gap-2 flex-shrink-0 bg-zinc-900/50 p-0.5 md:p-1 rounded-md border border-white/5">
