@@ -261,14 +261,14 @@ export function WatchPlayer({
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
+        <div className="flex items-center gap-1 md:gap-3 flex-shrink-0 ml-auto">
           {/* Watch Party Controls */}
           <WatchPartyControls
             onSyncAction={handleSyncAction}
             currentMedia={{ server: activeServer, season, episode, title }}
           />
 
-          <div className="hidden xs:block w-px h-4 bg-white/10 mx-1" />
+          <div className="hidden xs:block w-px h-4 bg-white/10 mx-0.5" />
 
           {/* External Controls to bypass overlay */}
           <button
@@ -276,7 +276,7 @@ export function WatchPlayer({
             className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full transition-colors"
             title="Recarregar Player (Liberar)"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3.5 w-3.5 md:h-4 md:w-4" />
           </button>
 
           <button
@@ -284,7 +284,7 @@ export function WatchPlayer({
             className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full transition-colors"
             title="Tela Cheia (Forçar)"
           >
-            <Maximize className="h-4 w-4" />
+            <Maximize className="h-3.5 w-3.5 md:h-4 md:w-4" />
           </button>
 
           <div className="hidden sm:block w-px h-4 bg-white/10 mx-1" />
@@ -335,13 +335,13 @@ export function WatchPlayer({
             <p className="text-zinc-400 text-sm animate-pulse font-medium">Sincronizando Servidor 2...</p>
           </div>
         ) : currentPlayerUrl ? (
-          /* Player wrapped in /api/embed for ad blocking */
           <iframe
             key={playerKey}
             src={`/api/embed?url=${encodeURIComponent(currentPlayerUrl)}`}
-            className="w-full h-full flex-1 aspect-video"
+            className="w-full h-full flex-1 aspect-video border-none"
             allowFullScreen
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope; volume-control; clipboard-write"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope; volume-control; clipboard-write; display-capture; geolocation; microphone; camera; midi; bluetooth; payment"
+            sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation allow-storage-access-by-user-activation"
             title={title}
           />
         ) : (
