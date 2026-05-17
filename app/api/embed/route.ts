@@ -2,15 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const url = searchParams.get("url");
+  const urlParams = searchParams.get("url");
 
-  if (!url) {
+  if (!urlParams) {
     return new NextResponse("Missing url", { status: 400 });
   }
 
-  // Build a clean intermediary HTML page that wraps the embed
-  // Adicionamos TODAS as permissões de sandbox possíveis para evitar erros de bloqueio de recursos
-  // E garantimos que o referrer policy seja respeitado para os servidores de vídeo funcionarem
+  // Iframe direto sem sandbox — provedores detectam wrapper + sandbox como anti-anúncio.
   const html = `<!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -33,26 +31,19 @@ export async function GET(req: NextRequest) {
 <body>
   <iframe
   id="player"
-  src="${url.replace(/"/g, '&quot;')}"
+  src="${urlParams.replace(/"/g, '&quot;')}"
   allowfullscreen
   allow="autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope; volume-control; clipboard-write; display-capture; geolocation; microphone; camera; midi; bluetooth; payment"
-  sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation allow-storage-access-by-user-activation"
   referrerpolicy="no-referrer-when-downgrade"
 ></iframe>
 
 <script>
-  // Dummy variable to fool some adblock detectors
-  window.canRunAds = true;
-  window.isAdblockActive = false;
-  
-  // Tentar notificar o pai caso o iframe mude
   window.addEventListener('message', (event) => {
     if (event.data && event.data.type) {
       window.parent.postMessage(event.data, '*');
     }
   });
 
-  // Listener para controle remoto do player via postMessage
   window.addEventListener('message', (event) => {
     const iframe = document.getElementById('player');
     if (iframe && iframe.contentWindow) {
@@ -65,12 +56,11 @@ export async function GET(req: NextRequest) {
 </body>
 </html>`;
 
-
   return new NextResponse(html, {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
       "Referrer-Policy": "no-referrer-when-downgrade",
-      "X-Frame-Options": "ALLOWALL",
     },
+    status: 200,
   });
 }

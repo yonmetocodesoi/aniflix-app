@@ -61,12 +61,16 @@ export function WatchPlayer({
     ? [
       { id: 0, name: "Dublado 1", url: (imdbId ? `https://playerflixapi.com/filme/${imdbId}` : null) || playerUrl },
       { id: 1, name: "Dublado 2", url: (imdbId ? `https://embed.warezcdn.link/filme/${imdbId}` : null) },
-      { id: 2, name: "VidSrc (Legendado)", url: `https://vidsrc.xyz/embed/movie/${tmdbId}` },
+      { id: 5, name: "Embed.su (Limpo)", url: `https://embed.su/embed/movie/${tmdbId}` },
+      { id: 6, name: "VidLink (Limpo)", url: `https://vidlink.pro/movie/${tmdbId}` },
+      { id: 2, name: "VidSrc", url: `https://vidsrc.xyz/embed/movie/${tmdbId}` },
       { id: 3, name: "Servidor 2", url: scraperUrl },
       { id: 4, name: "SuperEmbed", url: `https://multiembed.mov/?video_id=${imdbId}&tmdb_id=${tmdbId}` },
     ]
     : [
       { id: 0, name: "Dublado 1", url: `https://playerflixapi.com/serie/${tmdbId}/${season}/${episode}` },
+      { id: 4, name: "Embed.su (Limpo)", url: `https://embed.su/embed/tv/${tmdbId}/${season}/${episode}` },
+      { id: 5, name: "VidLink (Limpo)", url: `https://vidlink.pro/tv/${tmdbId}/${season}/${episode}` },
       { id: 1, name: "VidSrc", url: `https://vidsrc.xyz/embed/tv/${tmdbId}/${season}/${episode}` },
       { id: 2, name: "Servidor 2", url: scraperUrl },
       { id: 3, name: "SuperEmbed", url: `https://multiembed.mov/?video_id=${imdbId}&tmdb_id=${tmdbId}&s=${season}&e=${episode}` },
@@ -98,10 +102,6 @@ export function WatchPlayer({
 
   const currentSeason = seasons?.find((s) => s.season_number === season)
   const totalEpisodes = currentSeason?.episode_count || 1
-
-  // Remove pop-up blocker to prevent sandbox/tampering detection
-  // The user requested to leave ads as-is to avoid errors
-
 
   useEffect(() => {
     const isScraper = (mediaType === "movie" && activeServer === 3) || (mediaType === "tv" && activeServer === 2);
@@ -337,11 +337,11 @@ export function WatchPlayer({
         ) : currentPlayerUrl ? (
           <iframe
             key={playerKey}
-            src={`/api/embed?url=${encodeURIComponent(currentPlayerUrl)}`}
+            src={currentPlayerUrl}
             className="w-full h-full flex-1 aspect-video border-none"
             allowFullScreen
             allow="autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope; volume-control; clipboard-write; display-capture; geolocation; microphone; camera; midi; bluetooth; payment"
-            sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation allow-storage-access-by-user-activation"
+            referrerPolicy="no-referrer-when-downgrade"
             title={title}
           />
         ) : (
